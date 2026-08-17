@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "Knock Daniel Down",
+    "slug": "knock-daniel-down",
+    "version": "2.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "scheme": "knockdanieldown",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#000000",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.fira.knockdanieldown"
+    },
+    "android": {
+      "package": "com.fira.knockdanieldown",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#000000"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": ["expo-audio"]
+  }
+}
