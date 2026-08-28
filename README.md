@@ -7,7 +7,7 @@ A small arcade game about tapping faces before they slide off the screen. Origin
   <img src="docs/screenshots/menu.png" alt="Main menu" width="162">
   <img src="docs/screenshots/gameplay.png" alt="Gameplay" width="162">
   <img src="docs/screenshots/gameover.png" alt="Game over screen" width="162">
-  <img src="docs/screenshots/settings.png" alt="Credits and settings" width="162">
+  <img src="docs/screenshots/settings.png" alt="Settings" width="162">
 </p>
 
 ## Getting started
@@ -38,24 +38,31 @@ Faces slide in from the left. Tap one before it leaves the right edge — if any
 | Thing | What it does |
 | --- | --- |
 | Ordinary face | 1 point |
-| Golden face | 5 points, and 1 diamond |
+| Golden face | 5 points |
+| Diamond face | 1 point and 1, 2 or 3 diamonds. Far rarer than golden, and the only way to earn diamonds. You will see it coming — it trails light. |
+| Mexican face | 15 points, and a burst of cacti. Only appears once you have bought the head. |
+| Mexican face | 15 points, and a burst of cacti. Only appears once you have bought the head. |
 | Bomb | Never tap it. Tapping one ends the run. Bombs only start appearing after 15 points. |
 
 Both the spawn rate and the crossing speed tighten slightly with every face you knock down, so runs get faster the longer you last.
 
-**Diamonds** are earned by knocking down golden faces, and spent on:
+A face you hit is knocked up out of its lane and tumbles off the bottom of the screen, and the knock-down sound changes from hit to hit.
+
+**Diamonds** are earned by knocking down diamond faces, and spent in the store between runs:
 
 - **Fart** (1 diamond) — clears faces automatically at mid-screen for 10 seconds.
 - **No bombs** (1 diamond) — stops bombs spawning for 10 seconds.
-- **Continue** — revives you after a loss and keeps your score. It costs 1 diamond the first time and one more each time you use it in the same run.
+- **Daniels** — extra heads to knock down. Classic, golden and diamond are yours from the start; **Mexican Daniel** costs 50 diamonds, is worth 15 points, and bursts with cacti.
 
-**Extra hard** mode, in the credits screen, opens a second lane at 20 points and a third at 50. Your best score and diamond balance are saved between sessions.
+Power-ups are stock: buy them in the store, then spend them in a run. You cannot shop once a run has started. **Continue** is the exception — it revives you after a loss and keeps your score, costing 1 diamond the first time and one more each time you use it in the same run.
+
+Faces start out crossing the middle of the screen. A **second lane** opens at 20 points and a **third** at 50, so you end up watching the whole screen at once. Your best score and diamond balance are saved between sessions.
 
 ## No payments, no tracking
 
 The 2017 version sold diamonds through Google Play billing. All of that is gone: the store screen, the billing library, the `com.android.vending.BILLING` permission, and the Play licensing key. Diamonds are now earned by playing.
 
-The game contains no analytics, no crash reporting, no advertising, and no third-party SDKs of any kind. It makes no network requests of its own, and every piece of saved state (best score, diamonds, the hard-mode flag) lives only on your device — `localStorage` on the web, and the platform key-value store on iOS and Android. There is nothing to opt out of.
+The game contains no analytics, no crash reporting, no advertising, and no third-party SDKs of any kind. It makes no network requests of its own, and every piece of saved state (best score, diamonds, your power-ups, unlocked heads, the audio toggles) lives only on your device — `localStorage` on the web, and the platform key-value store on iOS and Android. There is nothing to opt out of.
 
 ## Project layout
 
@@ -64,10 +71,16 @@ App.tsx                  screen switching and the phone-shaped web frame
 src/
   components/
     Face.tsx             one face or bomb crossing the screen
+    GoldenRings.tsx      the rings thrown out by a golden face
+    LightRays.tsx        the halo behind a diamond face
+    ParticleBurst.tsx    diamonds or cacti thrown from a hit
+    Panel.tsx            a titled card, shared by settings and credits
     PillButton.tsx       the game's button, using the original artwork
+    ScreenHeader.tsx     the back bar on the menu sub-screens
   game/
-    audio.ts             sound effects
+    audio.ts             sound effects and the two music loops
     constants.ts         every tuning value for a run
+    faces.ts             the head catalogue
     images.ts            all artwork, in one place
     storage.ts           saved state
     types.ts             shared types
@@ -75,7 +88,8 @@ src/
     LoadingScreen.tsx    splash sequence
     MenuScreen.tsx       main menu
     GameScreen.tsx       the game itself
-    CreditsScreen.tsx    credits and settings
+    StoreScreen.tsx      spending diamonds on power-ups and heads
+    SettingsScreen.tsx   audio, saved progress, credits
 assets/                  the original 2017 artwork and sounds
 docs/screenshots/        the images above
 ```
@@ -90,7 +104,7 @@ Two decisions explain most of the code.
 
 **The run lives in refs, not state.** The spawn timer and the rules tick both read and write the run many times a second, and routing that through React state would mean acting on stale values. `GameScreen` keeps the run in a ref and calls a `repaint` reducer whenever something changes that the player should see.
 
-There is no navigation library. With four screens and no deep linking, `App.tsx` just tracks which one is current, which also keeps the web build free of routing configuration.
+There is no navigation library. With five screens and no deep linking, `App.tsx` just tracks which one is current, which also keeps the web build free of routing configuration.
 
 ## Contributing
 

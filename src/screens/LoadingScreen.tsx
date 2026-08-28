@@ -6,14 +6,15 @@ import { IMAGES } from '../game/images';
 type Props = { onDone: () => void };
 
 /**
- * The splash sequence, in three beats: the studio logo fades up and away, the
- * title card appears on black, and then the portrait behind it is revealed.
+ * The splash sequence, in three beats: the author credit fades up and away,
+ * the title card appears on black, and then the portrait behind it is
+ * revealed.
  *
  * The original chained this through four levels of nested animation callbacks.
  * Here it is one declarative sequence, and a tap anywhere skips it.
  */
 export function LoadingScreen({ onDone }: Props) {
-  const studio = useRef(new Animated.Value(0)).current;
+  const byline = useRef(new Animated.Value(0)).current;
   const titleCard = useRef(new Animated.Value(0)).current;
   const portrait = useRef(new Animated.Value(0)).current;
   const finished = useRef(false);
@@ -26,9 +27,9 @@ export function LoadingScreen({ onDone }: Props) {
 
   useEffect(() => {
     const sequence = Animated.sequence([
-      Animated.timing(studio, { toValue: 1, duration: 1100, useNativeDriver: true }),
+      Animated.timing(byline, { toValue: 1, duration: 1100, useNativeDriver: true }),
       Animated.delay(500),
-      Animated.timing(studio, { toValue: 0, duration: 600, useNativeDriver: true }),
+      Animated.timing(byline, { toValue: 0, duration: 600, useNativeDriver: true }),
       Animated.timing(titleCard, { toValue: 1, duration: 800, useNativeDriver: true }),
       Animated.delay(400),
       Animated.timing(portrait, { toValue: 1, duration: 900, useNativeDriver: true }),
@@ -52,11 +53,9 @@ export function LoadingScreen({ onDone }: Props) {
         resizeMode="cover"
         style={[StyleSheet.absoluteFill, { opacity: portrait }]}
       />
-      <Animated.Image
-        source={IMAGES.studioLogo}
-        resizeMode="contain"
-        style={[styles.studio, { opacity: studio }]}
-      />
+      <Animated.Text style={[styles.byline, { opacity: byline }]}>
+        A game by Johan Svartdal
+      </Animated.Text>
     </View>
   );
 }
@@ -68,8 +67,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  studio: {
-    width: '70%',
-    height: 80,
+  byline: {
+    position: 'absolute',
+    paddingHorizontal: 24,
+    color: '#ffffff',
+    fontSize: 22,
+    fontWeight: '600',
+    letterSpacing: 0.5,
+    textAlign: 'center',
   },
 });

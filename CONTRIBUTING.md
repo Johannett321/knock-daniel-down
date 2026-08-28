@@ -25,9 +25,18 @@ There is no automated test suite. The game is short enough to check by hand, and
 
 - A face that escapes the right edge ends the run.
 - Tapping a bomb ends the run. Bombs only appear above 15 points.
-- A golden face gives 5 points and 1 diamond.
-- The best score, diamond balance and Extra Hard flag survive a reload.
-- Both power-ups spend a diamond, last 10 seconds, and re-enable afterwards.
+- A golden face gives 5 points and no diamonds, and throws gold rings from the point of contact.
+- Every button clicks when pressed, and goes quiet with the sound-effects toggle.
+- On the web, buttons lift under the cursor and squash further when pressed. Nothing hovers on a phone, and nothing should break there.
+- A diamond face trails light rays, pays 1, 2 or 3 diamonds, and throws a shower of them on impact — more of them for a bigger payout — plus a blue flash and a brief zoom.
+- A Mexican face does not spawn at all until the head is bought, then gives 15 points and throws cacti.
+- A knocked-down face punches, flies up, tumbles and drops off the bottom, with a ring at the point of contact.
+- The knock-down sound changes from hit to hit and never repeats twice running.
+- The best score, diamond balance, power-up stock, unlocked heads and audio toggles survive a reload.
+- Power-ups can be bought in the store and not in a run, and using one drops the count.
+- Menu music loops on the menus and swaps to the game track during a run. It stops when the death screen appears and starts again on Restart or Continue.
+- A second lane appears at 20 points and a third at 50.
+- Both power-ups spend one from stock, last 10 seconds, and grey out at zero.
 - Continue costs one more diamond each time it is used within a run, and resets on restart.
 
 If you change anything about spawning, movement or scoring, please check it on the web build *and* at least one native target. They share all of the logic, but not all of the event handling — see below.

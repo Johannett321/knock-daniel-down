@@ -10,10 +10,10 @@
     "backgroundColor": "#000000",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.fira.knockdanieldown"
+      "bundleIdentifier": "com.johansvartdal.knockdanieldown"
     },
     "android": {
-      "package": "com.fira.knockdanieldown",
+      "package": "com.johansvartdal.knockdanieldown",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
